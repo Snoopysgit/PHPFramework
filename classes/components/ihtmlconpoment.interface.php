@@ -2,11 +2,11 @@
 /**
  * Interface IHTMLComponent
  * Interface for all HTMLComponents. A HTML component is basicly a tag with content. Therefore the interface provides methods to get these tag information.
- * A Tag can be:
- * <code><pre>
- * <a></a>
- * <div></div>
- * </pre></code>
+ * A Tag can be e.g.:
+ * <code>
+ * &lt;a&gt;&lt;/a&gt;
+ * &lt;div&gt;&lt;/div&gt;
+ * </code>
  * @author Christian Thommen
  */
 interface IHTMLComponent{
@@ -14,18 +14,18 @@ interface IHTMLComponent{
 	 * Gets the HTML of this component
 	 * 
 	 * This includes the content between the start and the end tag. e.g: 
-	 * <code><pre>
-	 * <div>Hello world!</div>
-	 * </pre></code>
+	 * <code>
+	 * &lt;div&gt;Hello world!&lt;/div&gt;
+	 * </code>
 	 */
 	function getHTML();
 	/**
 	 * Gets the inner HTML of this component
 	 * 
 	 * This is just the content between the start and the end tag, but without the tags. e.g: 
-	 * <code><pre>
+	 * <code>
 	 * Hello world!
-	 * </pre></code>
+	 * </code>
 	 */
 	function getInnerHTML();
 }
