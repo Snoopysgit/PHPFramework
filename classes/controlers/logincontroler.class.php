@@ -1,5 +1,9 @@
 <?php
-class LoginControler extends AbstractControler{
+namespace phpframework\controlers;
+use phpframework\orm\loginorm;
+use phpframework\orm\personaccessrightorm;
+
+class LoginControler extends Controler{
 	private $login;
 	private $accessRights;
 	

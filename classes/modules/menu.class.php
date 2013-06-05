@@ -1,4 +1,13 @@
 <?php
+namespace phpframework\modules;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmllist;
+use phpframework\components\htmllistitem;
+use phpframework\components\htmltext;
+use phpframework\controlers\navigationcontroler;
+use phpframework\controlers\navigator;
+use phpframework\controlers\logincontroler;
+
 class Menu extends HTMLContainer{
 	private $menuName;
 	

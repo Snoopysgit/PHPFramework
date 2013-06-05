@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLTable extends HTMLContainer{
 	public function __construct($values = ""){
 		parent::__construct($values);

@@ -1,5 +1,7 @@
 <?php
-class ContentControler extends AbstractControler{
+namespace phpframework\controlers;
+
+class ContentControler extends Controler{
 	private $navigatorsByCategory;
 	private $navigatorsById;
 	

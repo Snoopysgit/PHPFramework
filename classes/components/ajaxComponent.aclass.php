@@ -1,5 +1,7 @@
 <?php
-abstract class AjaxComponent extends HTMLComponent implements IAjaxComponent{
+namespace phpframework\components;
+
+abstract class AjaxComponent extends HTMLComponent implements AjaxComponentInterface{
 	private $loadDeferred;
 	public function __construct($loadDeferred = false){
 		parent::__construct();

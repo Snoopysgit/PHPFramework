@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLIcon extends HTMLComponent{	
 	public function __construct($icon = ""){
        parent::__construct();

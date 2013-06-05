@@ -1,6 +1,9 @@
 <?php
+namespace phpframework\modules;
+use phpframework\components\htmlcontainer;
+use phpframework\controlers\navigationcontroler;
+
 class HTMLForm extends HTMLContainer{
-	
 	public function __construct($name = "", $action = "", $method = "POST"){
 		parent::__construct();
 		$this->setTag("form");

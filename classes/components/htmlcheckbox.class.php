@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLCheckbox extends HTMLInput{
 	public function __construct($name="", $required=false){
 		parent::__construct($name, "checkbox");

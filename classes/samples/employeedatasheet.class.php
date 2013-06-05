@@ -1,4 +1,12 @@
 <?php
+namespace phpframework\samples;
+use phpframework\orm\ormroweditor;
+use phpframework\orm\accessrightorm;
+use phpframework\orm\personaccessrightorm;
+use phpframework\components\htmltitle;
+use phpframework\components\htmllabel;
+use phpframework\components\htmlcheckbox;
+
 class EmployeeDataSheet extends ORMRowEditor{
 	private $possibleAccessRights = array();
 	private $currentAccessRights = array();

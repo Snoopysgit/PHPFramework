@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLInput extends HTMLComponent{
 	public function __construct($name="", $type = "text", $placeholder = "", $value="", $required=false){
 		parent::__construct();

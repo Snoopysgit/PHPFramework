@@ -1,7 +1,27 @@
 <?php
+namespace phpframework\orm;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmllabel;
+use phpframework\components\htmlinput;
+use phpframework\components\htmlsubmitbutton;
+use phpframework\components\htmltable;
+use phpframework\components\htmltitle;
+use phpframework\components\htmlicon;
+use phpframework\components\htmltext;
+use phpframework\components\htmltablehead;
+use phpframework\components\htmltableheadcell;
+use phpframework\components\htmltablerow;
+use phpframework\components\htmltablebody;
+use phpframework\components\htmltablecell;
+use phpframework\modules\htmlform;
+use phpframework\modules\htmldialog;
+use phpframework\controlers\logincontroler;
+use phpframework\controlers\messagecontroler;
+use phpframework\controlers\messageprinter;
+
 class ORMTableEditor extends HTMLContainer{
 	private $columns;
-	private $rowEditorClass = "ORMRowEditor";
+	private $rowEditorClass = "phpframework\orm\ORMRowEditor";
 	private $rowEditor;
 	private $orm;
 	private $table;
@@ -28,7 +48,8 @@ class ORMTableEditor extends HTMLContainer{
 	}
 	private function initRowEditor($orm, $record){
 		$orm = $this->orm;
-		$this->rowEditor[$record->getId()] = new $this->rowEditorClass($orm, $record);
+		$classToCall = $this->rowEditorClass;
+		$this->rowEditor[$record->getId()] = new $classToCall($orm, $record);
 	}
 	private function setHeader($columns){
 		$thead = new HTMLTableHead();
@@ -93,6 +114,7 @@ class ORMTableEditor extends HTMLContainer{
 		}
 	}
 	public function setORM($orm){
+		$orm = $orm;
 		$this->orm = $orm;
 		if($this->isAllowedToEditRecords()){
 			$this->initRowEditor($orm, $orm::newRow());
@@ -148,10 +170,12 @@ class ORMRowEditor extends HTMLContainer{
 		parent::__construct();
 		if($record != null){
 			$orm = get_class($record);
+		}else{
+			$orm = $orm;
 		}
+		$this->orm = $orm;
 		$this->deleted = false;
 		$this->updated = false;
-		$this->orm = $orm;
 		$this->editDisabled = $editDisabled;
 		$this->initComponents();
 		$this->setRecord($record);

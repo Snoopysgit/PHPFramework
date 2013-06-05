@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLButton extends HTMLText{	
 	public function __construct($text = "Button", $name = "", $value="true", $type="button"){
        parent::__construct($text);

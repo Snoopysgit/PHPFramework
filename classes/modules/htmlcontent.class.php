@@ -1,4 +1,9 @@
 <?php
+namespace phpframework\modules;
+use phpframework\controlers\navigatorinterface;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmlcomponent;
+
 class HTMLContent extends HTMLContainer{	
 	public function __construct(){
        parent::__construct();

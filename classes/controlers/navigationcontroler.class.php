@@ -1,5 +1,8 @@
 <?php
-class NavigationControler extends AbstractControler{
+namespace phpframework\controlers;
+use phpframework\components\htmllink;
+
+class NavigationControler extends Controler{
 	private $navigatorsByCategory;
 	private $navigatorsById;
 	

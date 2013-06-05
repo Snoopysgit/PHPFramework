@@ -1,5 +1,7 @@
 <?php
-class SessionControler extends AbstractControler{
+namespace phpframework\controlers;
+
+class SessionControler extends Controler{
 	
 	protected function __construct(){
 		parent::__construct();

@@ -1,4 +1,13 @@
 <?php
+namespace phpframework\samples;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmlinput;
+use phpframework\components\htmlsubmitbutton;
+use phpframework\components\htmltitle;
+use phpframework\components\htmlicon;
+use phpframework\modules\htmlform;
+use phpframework\controlers\logincontroler;
+
 class LoginBar extends HTMLContainer{
 	private $form;
 	private $inputLoginName;
@@ -44,7 +53,6 @@ class LoginBar extends HTMLContainer{
 		$container = new HTMLContainer();
 		$container->addClassName("input-prepend");
 		$container->addClassName("span4");
-		
 		$loginnameIcon = new HTMLIcon("icon-user");
 		$iconholder = new HTMLContainer();
 		$iconholder->setTag("span");

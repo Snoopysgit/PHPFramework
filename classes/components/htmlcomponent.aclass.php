@@ -1,5 +1,7 @@
 <?php
-abstract class HTMLComponent implements IHTMLComponent{
+namespace phpframework\components;
+
+abstract class HTMLComponent implements HTMLComponentInterface{
 	// className
 	private $className;
 	
@@ -19,7 +21,7 @@ abstract class HTMLComponent implements IHTMLComponent{
 	private static $objId = array();
 	
 	public function __construct(){
-		$this->className = get_class($this);
+		$this->className = join('', array_slice(explode('\\', get_class($this)), -1));
 		if(isset(self::$objId[$this->className])){
 			self::$objId[$this->className]++;
 		}else{

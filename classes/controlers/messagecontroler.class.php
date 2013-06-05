@@ -1,5 +1,7 @@
 <?php
-class MessageControler extends AbstractControler{
+namespace phpframework\controlers;
+
+class MessageControler extends Controler{
 	private $printer;
 	protected function __construct(){
 		parent::__construct();
@@ -20,7 +22,8 @@ class MessageControler extends AbstractControler{
 	public static function getMessage($titel, $msg, $type){
 		return MessageControler::singleton()->getPrinter()->getMessage($titel, $msg, $type);
 	}
-} 
+}
+
 interface MessagePrinter{
 	const InformationMessage = 0;
 	const SuccessMessage = 1;
@@ -31,6 +34,11 @@ interface MessagePrinter{
 	public function printError($titel, $message, $id, $color);
 	public function getMessage($titel, $message, $type);
 }
+
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmlbutton;
+use phpframework\components\htmltext;
+
 class DefaultMessagePrinter implements MessagePrinter{
     public function printException(Exception $e){
 		print $this->getMessage("Es ist ein unerwarteter Fehler aufgetreten", 

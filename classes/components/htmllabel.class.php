@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLLabel extends HTMLText{
 	
 	public function __construct($text = ""){

@@ -1,5 +1,7 @@
 <?php
-abstract class AbstractControler{
+namespace phpframework\controlers;
+
+abstract class Controler{
 
     private static $_instances = array();
 	

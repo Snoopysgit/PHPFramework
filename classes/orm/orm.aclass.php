@@ -1,4 +1,7 @@
 <?php
+namespace phpframework\orm;
+use phpframework\controlers\databasecontroler;
+
 abstract class ORM implements ORMInterface{	
 	protected function __construct(){
 		$classname = get_called_class();

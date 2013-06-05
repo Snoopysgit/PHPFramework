@@ -1,5 +1,7 @@
 <?php
-class DatabaseControler extends AbstractControler{
+namespace phpframework\controlers;
+
+class DatabaseControler extends Controler{
 	private $dbHost = 'localhost'; 
 	private $dbUser = 'marvadmin';
 	private $dbPwd = '1234'; 

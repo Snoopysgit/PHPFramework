@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLList extends HTMLContainer{
 	private $listItems;
 	public function __construct(){

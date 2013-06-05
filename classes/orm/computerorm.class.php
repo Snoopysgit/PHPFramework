@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\orm;
+
 class ComputerORM extends ORM{
 
 	protected function __construct(){

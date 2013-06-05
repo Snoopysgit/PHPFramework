@@ -1,5 +1,6 @@
 <?php
-namespace ct.phpFramework.components
+namespace phpframework\components;
+
 /**
  * Interface IHTMLComponent
  * Interface for all HTMLComponents. A HTML component is basicly a tag with content. Therefore the interface provides methods to get these tag information.
@@ -10,7 +11,7 @@ namespace ct.phpFramework.components
  * </code>
  * @author Christian Thommen
  */
-interface IHTMLComponent{
+interface HTMLComponentInterface{
 	/**
 	 * Gets the HTML of this component
 	 * 

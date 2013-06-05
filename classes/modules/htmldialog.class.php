@@ -1,4 +1,10 @@
 <?php
+namespace phpframework\modules;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmlbutton;
+use phpframework\components\htmllink;
+use phpframework\controlers\navigatorinterface;
+
 class HTMLDialog extends HTMLContainer implements NavigatorInterface{	
 	private $head;
 	private $body;

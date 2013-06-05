@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLContainer extends HTMLComponent{	
 	private $content = array();
 	
@@ -9,8 +11,8 @@ class HTMLContainer extends HTMLComponent{
 	public function refreshHTML(){
 		$containerContent = '';
 		foreach($this->content as $content){
-			if(is_a($content, "HTMLComponent")){
-				$containerContent .= $content->getHTML()."\n";
+			if(is_a($content, "phpframework\components\HTMLComponent")){
+				$containerContent .= $content."\n";
 			}else{
 				$containerContent .= $content."\n";
 			}
@@ -23,15 +25,21 @@ class HTMLContainer extends HTMLComponent{
 				$this->addContent($value);
 			}
 		}else{
-			if(is_a($HTMLComponent, "HTMLComponent")){
+			if(is_a($HTMLComponent, "phpframework\components\HTMLComponent")){
 				$this->content[$HTMLComponent->getElementId()] = $HTMLComponent;
 			}elseif($HTMLComponent != ""){
-				array_push($this->content, $HTMLComponent);
+				$this->content[] = $HTMLComponent;
 			}
 		}
 	}
 	public function removeContent(HTMLComponent $HTMLComponent){
 		unset($this->content[$HTMLComponent->getElementId()]);
+	}
+	public function getContent($key){
+		return $this->content[$key];
+	}
+	public function removeAllContent(){
+		$this->content = array();
 	}
 }
 ?>

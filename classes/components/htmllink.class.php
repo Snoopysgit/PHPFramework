@@ -1,4 +1,6 @@
 <?php
+namespace phpframework\components;
+
 class HTMLLink extends HTMLText{
 	private $link;
 	public function __construct($link){
