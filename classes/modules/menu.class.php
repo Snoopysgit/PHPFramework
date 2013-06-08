@@ -1,12 +1,12 @@
 <?php
 namespace phpframework\modules;
-use phpframework\components\htmlcontainer;
-use phpframework\components\htmllist;
-use phpframework\components\htmllistitem;
-use phpframework\components\htmltext;
-use phpframework\controlers\navigationcontroler;
-use phpframework\controlers\navigator;
-use phpframework\controlers\logincontroler;
+use phpframework\components\HTMLContainer;
+use phpframework\components\HTMLList;
+use phpframework\components\HTMLListItem;
+use phpframework\components\HTMLText;
+use phpframework\controlers\NavigationControler;
+use phpframework\controlers\Navigator;
+use phpframework\controlers\LoginControler;
 
 class Menu extends HTMLList{
 	private $menuName;
