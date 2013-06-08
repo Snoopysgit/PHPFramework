@@ -2,13 +2,8 @@
 namespace phpframework\components;
 
 class HTMLText extends HTMLContainer{
-	private $text = "";
-	
-	public function __construct($text = ""){
-       parent::__construct($text);
-	   $this->setTag("font");
-	   
-	   $this->setText($text);
+	protected function getTagName(){
+		return "font";
 	}
 	public function setText($text){
 		$this->removeAllContent();

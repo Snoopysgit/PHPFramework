@@ -1,74 +1,132 @@
 <?php
 namespace phpframework\components;
 
+/**
+ * Base class for all HTMLComponents
+ * 
+ * This abstract class implements the HTMLComponentInterface and provides basic features which every HTML tag can have
+ * This includes an ID for each tag and the possibility to add/remove attributes or classnames to the tag
+ * @author Christian Thommen
+ */
 abstract class HTMLComponent implements HTMLComponentInterface{
-	// className
-	private $className;
-	
-	//element id, klasse und attribute der komponente
-	private $elementId = "";
+	/*
+	* classNames contained in this tag
+	*/
 	private $classes = array();
+	/*
+	* attributes contained in this tag
+	*/
 	private $attributes = array();
-	
-	//html output
-	private $HTML;
-	private $innerHTML;
-	private $tag = "div";
-	private $startTag;
-	private $endTag;
-	
-	// laufnummer für alle HTML objekte
+	/*
+	* holds the tagname, defaults to div
+	*/
+	private $tag = "";	
+	/*
+	* holds all content for this tag. 
+	* This can be other HTMLComponents or Objects which implements the magic method __toString()
+	*/
+	private $content = array();
+	/*
+	* static counter for tag ID generation. Holds one counter per class
+	*/
 	private static $objId = array();
 	
-	public function __construct(){
-		$this->className = join('', array_slice(explode('\\', get_class($this)), -1));
-		if(isset(self::$objId[$this->className])){
-			self::$objId[$this->className]++;
+	/*
+	* The constructor of a HTMLComponent initializes the component with a 
+	* @param $content HTMLComponent or class which implements __toString or an array() of such objects 
+	* @return a new instance of this class
+	*/
+	public function __construct($content = null){
+		$classWithNamespace = str_replace('\\', '_', get_class($this));
+		if(isset(self::$objId[$classWithNamespace])){
+			self::$objId[$classWithNamespace]++;
 		}else{
-			self::$objId[$this->className] = 0;			
+			self::$objId[$classWithNamespace] = 0;
 		}
-		$this->setElementId($this->className."_".self::$objId[$this->className]);
+		$this->setElementId($classWithNamespace."_".self::$objId[$classWithNamespace]);
+		$this->addContent($content);
+	}
+	/*
+	* Sets the elementId
+	* @param string $elementId a string for the id attribute of this component
+	*/
+	private function setElementId($elementId){
+		$this->addAttribute("id", $elementId);
+	}
+	/*
+	* Gets the start tag of this component. This includes all attributes, classNames and the ID of this component.
+	*
+	* @return a string with the whole start tag
+	*/
+	private function getStartTag(){
+		$startTag = "<".$this->getTag();
+		
+		foreach($this->attributes as $attributeKey => $attributeValue){
+			$startTag .= " ";
+			$startTag .= $attributeKey;
+			$startTag .= "='";
+			$startTag .= $attributeValue;
+			$startTag .= "'";
+		}
+		if(count($this->classes)>0){
+			$startTag .= " class='";
+			foreach($this->classes as $class){
+				$startTag .= $class;
+				$startTag .= " ";
+			}
+			$startTag .= "'";
+		}
+		$startTag .= ">\n";
+		return $startTag;
+	}
+	/*
+	* Gets the end tag of this component
+	*
+	* @return string the end tag
+	*/
+	private function getEndTag(){
+		return "</".$this->getTag().">\n";
 	}
 	public function getHTML(){
-		$this->setHTML();			// setzt einen container um die html inhalte
-		return $this->HTML;			// gibt html zurück
+		$HTML = $this->getStartTag();
+		$HTML .= $this->getInnerHTML();
+		$HTML .= $this->getEndTag();
+		return $HTML;
+	}
+	public function getInnerHTML(){
+		$contentString = '';
+		foreach($this->content as $content){
+			$contentString .= $content."\n";
+		}
+		return $contentString;
 	}
 	public function __toString(){
 		return $this->getHTML();
 	}
-	public function getInnerHTML(){
-		$this->refreshHTML();		// aktualisiert html inhalte
-		return $this->innerHTML;		
+	public function setTag($tagName){
+		$this->tag = $tagName;
+	}
+	public function getTag(){
+		if($this->tag == ""){
+			return $this->getTagName();
+		}else{
+			return $this->tag;
+		}
 	}
 	public function getElementId(){
-		return $this->elementId;
-	}
-	private function setElementId($elementId){
-		$this->elementId = $elementId;
-		$this->addAttribute("id", $elementId);
-	}
-	public function getClassName(){
-		return $this->className;
-	}
-	private function setHTML(){
-		$this->HTML .= $this->getStartTag();
-		$this->HTML .= $this->getInnerHTML();
-		$this->HTML .= $this->getEndTag();
-	}
-	protected function setInnerHTML($newInnerHTML){
-		$this->innerHTML = $newInnerHTML;		
-	}
-	protected function addInnerHTML($newInnerHTML){
-		$this->innerHTML .= $newInnerHTML;		
-	}
-	public function setTag($newTag){
-		$this->tag = $newTag;
+		return $this->getAttribute("id");
 	}
 	public function addClassName($className){
-		$this->classes[$className] = $className;
+		$classNames = explode(" ", $className);
+		foreach($classNames as $name){
+			$this->classes[$name] = $name;
+		}
 	}
 	public function removeClassName($className){
-		unset($this->classes[$className]);
+		$classNames = explode($className);
+		foreach($classNames as $name){
+			unset($this->classes[$name]);
+		}
 	}
 	public function isClassNameSet($className){
 		return isset($this->classes[$className]);
@@ -82,40 +140,37 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function removeAttribute($attribute){
 		unset($this->attributes[$attribute]);
 	}
-	public function getStartTag(){
-		$this->setStartTag();
-		return $this->startTag;
-	}
-	public function getEndTag(){
-		$this->setEndTag();
-		return $this->endTag;	
-	}
-	private function setStartTag(){
-		$this->startTag = "<$this->tag";
-		
-		foreach($this->attributes as $attributeKey => $attributeValue){
-			$this->startTag .= " ";
-			$this->startTag .= $attributeKey;
-			$this->startTag .= "='";
-			$this->startTag .= $attributeValue;
-			$this->startTag .= "'";
-		}
-		if(count($this->classes)>0){
-			$this->startTag .= " class='";
-			foreach($this->classes as $class){
-				$this->startTag .= $class;
-				$this->startTag .= " ";
+	public function addContent($HTMLComponent){
+		if($HTMLComponent != null){
+			if(is_array($HTMLComponent)){
+				foreach($HTMLComponent as $value){
+					$this->addContent($value);
+				}
+			}else{
+				if(is_a($HTMLComponent, "phpframework\components\HTMLComponent")){
+					$this->content[$HTMLComponent->getElementId()] = $HTMLComponent;
+				}elseif($HTMLComponent != ""){
+					$this->content[] = $HTMLComponent;
+				}
 			}
-			$this->startTag .= "'";
 		}
-		$this->startTag .= ">\n";
 	}
-	private function setEndTag(){
-		$this->endTag = "</$this->tag>\n";
+	public function removeContent(HTMLComponent $HTMLComponent){
+		print "a";
+		unset($this->content[$HTMLComponent->getElementId()]);
+	}
+	public function getContent($elementId){
+		return $this->content[$key];
+	}
+	public function removeAllContent(){
+		$this->content = array();
 	}
 	/*
-	refreshHTML aktualisiert den HTML Inhalt. Die Funktionsollte setInnerHTML aufrufen
+	* Get's the tagName of this component. Each specific implementation of this class must implement this function.
+	* sample: return "div"; or return "font";
+	* @param string $elementId the elementId of a HTMLComponent to get
+	* @return string it mus return a string containing just alphabetic symbols a-z/A-Z
 	*/
-	abstract function refreshHTML();
+	protected abstract function getTagName();
 }
 ?>

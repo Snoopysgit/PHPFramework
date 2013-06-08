@@ -12,7 +12,7 @@ class EmployeeDataSheet extends ORMRowEditor{
 	private $currentAccessRights = array();
 	public function __construct($orm = "", $record = null, $editDisabled = false){
 		if($orm == ""){
-			$orm = "LoginORM";
+			$orm = "phpframework\orm\LoginORM";
 		}
 		parent::__construct($orm, $record, $editDisabled);
 	}

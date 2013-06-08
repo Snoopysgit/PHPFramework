@@ -35,9 +35,10 @@ interface MessagePrinter{
 	public function getMessage($titel, $message, $type);
 }
 
-use phpframework\components\htmlcontainer;
-use phpframework\components\htmlbutton;
-use phpframework\components\htmltext;
+use phpframework\components\HTMLContainer;
+use phpframework\components\HTMLButton;
+use phpframework\components\HTMLText;
+use phpframework\components\HTMLTitle;
 
 class DefaultMessagePrinter implements MessagePrinter{
     public function printException(Exception $e){
@@ -88,14 +89,14 @@ class DefaultMessagePrinter implements MessagePrinter{
 		$messageBox->addClassName("alert");
 		$messageBox->addClassName($type);
 		if($closeButtonVisible){
-			$closeButton = new HTMLButton("&times;");
+			$closeButton = new HTMLButton();
+			$closeButton->setValue("&times;");
 			$closeButton->addClassName("close");
 			$closeButton->addAttribute("data-dismiss", "alert");
 			$messageBox->addContent($closeButton);
 		}
 		if($title != ""){
-			$titleText = new HTMLText($title);
-			$titleText->setTag("h4");
+			$titleText = new HTMLTitle($title);
 			$messageBox->addContent($titleText);
 		}
 		$messageBox->addContent(new HTMLText($msg));

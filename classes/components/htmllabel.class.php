@@ -1,11 +1,9 @@
 <?php
 namespace phpframework\components;
 
-class HTMLLabel extends HTMLText{
-	
-	public function __construct($text = ""){
-       parent::__construct($text);
-	   $this->setTag("label");
+class HTMLLabel extends HTMLComponent{
+	protected function getTagName(){
+		return "label";
 	}
 	public function setField(HTMLComponent $component){
 		$this->setAttribute("for", $component->getElementId());

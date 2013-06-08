@@ -2,17 +2,17 @@
 namespace phpframework\components;
 
 class HTMLLink extends HTMLText{
-	private $link;
+	protected function getTagName(){
+		return "a";
+	}
 	public function __construct($link){
-		parent::__construct("");
-		$this->setTag("a");
+		parent::__construct();
 		$this->setLink($link);
 	}
 	public function getLink(){
-		return $this->link;
+		return $this->getAttribute("href");
 	}
 	public function setLink($link){
-		$this->link = $link;
 		$this->addAttribute("href",$link);
 	}
 }

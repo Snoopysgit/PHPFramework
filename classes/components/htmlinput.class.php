@@ -2,18 +2,17 @@
 namespace phpframework\components;
 
 class HTMLInput extends HTMLComponent{
+	protected function getTagName(){
+		return "input";
+	}
 	public function __construct($name="", $type = "text", $placeholder = "", $value="", $required=false){
 		parent::__construct();
-		$this->setTag("input");
 		
 		$this->setName($name);
 		$this->setType($type);
 		$this->setPlaceholder($placeholder);
 		$this->setValue($value);
 		$this->setRequired($required);
-	}
-	public function refreshHTML(){
-		// inputs haben keinen inhalt
 	}
 	public function setPlaceholder($placeholder){
 		if($placeholder != ""){

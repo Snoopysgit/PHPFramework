@@ -13,6 +13,17 @@ require_once 'components/htmlcomponent.aclass.php';
 require_once 'components/ajaxComponent.aclass.php';
 
 require_once 'components/htmlcontainer.class.php';
+require_once 'components/htmltext.class.php';
+require_once 'components/htmltitle.class.php';
+require_once 'components/htmllabel.class.php';
+require_once 'components/htmllink.class.php';
+require_once 'components/htmlicon.class.php';
+require_once 'components/htmlinput.class.php';
+require_once 'components/htmlbutton.class.php';
+require_once 'components/htmlsubmitbutton.class.php';
+require_once 'components/htmlcheckbox.class.php';
+require_once 'components/htmllist.class.php';
+require_once 'components/htmltable.class.php';
 
 require_once 'controlers/controler.aclass.php';
 require_once 'controlers/messagecontroler.class.php';
@@ -23,19 +34,6 @@ require_once 'controlers/sessioncontroler.class.php';
 require_once 'controlers/logincontroler.class.php';
 require_once 'controlers/navigationcontroler.class.php';
 require_once 'controlers/contentControler.class.php';
-
-require_once 'components/htmltext.class.php';
-require_once 'components/htmllabel.class.php';
-require_once 'components/htmlsessiontext.class.php';
-require_once 'components/htmlbutton.class.php';
-require_once 'components/htmlsubmitbutton.class.php';
-require_once 'components/htmlicon.class.php';
-require_once 'components/htmlinput.class.php';
-require_once 'components/htmlcheckbox.class.php';
-require_once 'components/htmltitle.class.php';
-require_once 'components/htmllist.class.php';
-require_once 'components/htmllink.class.php';
-require_once 'components/htmltable.class.php';
 
 require_once 'orm/orm.aclass.php';
 require_once 'orm/loginorm.class.php';

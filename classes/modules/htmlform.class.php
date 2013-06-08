@@ -1,13 +1,15 @@
 <?php
 namespace phpframework\modules;
-use phpframework\components\htmlcontainer;
-use phpframework\controlers\navigationcontroler;
+use phpframework\components\HTMLComponent;
+use phpframework\controlers\NavigationControler;
 
-class HTMLForm extends HTMLContainer{
+class HTMLForm extends HTMLComponent{
+	protected function getTagName(){
+		return "form";
+	}
 	public function __construct($name = "", $action = "", $method = "POST"){
 		parent::__construct();
-		$this->setTag("form");
-		$this->addAttribute("method", "POST");
+		$this->addAttribute("method", $method);
 		$this->setName($name);
 		if($action == ""){
 			$action= NavigationControler::singleton()->getCurrentLink();

@@ -1,41 +1,34 @@
 <?php
 namespace phpframework\components;
 
-class HTMLTable extends HTMLContainer{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("table");
-		$this->addClassName("table table-condensed");
+class HTMLTable extends HTMLComponent{
+	protected function getTagName(){
+		return "table";
 	}
 }
-class HTMLTableHead extends HTMLContainer{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("thead");
+class HTMLTableHead extends HTMLComponent{
+	protected function getTagName(){
+		return "thead";
 	}
 }
-class HTMLTableBody extends HTMLContainer{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("tbody");
+class HTMLTableBody extends HTMLComponent{
+	protected function getTagName(){
+		return "tbody";
 	}
 }
-class HTMLTableRow extends HTMLContainer{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("tr");
+class HTMLTableRow extends HTMLComponent{
+	protected function getTagName(){
+		return "tr";
 	}
 }
-class HTMLTableCell extends HTMLContainer{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("td");
+class HTMLTableCell extends HTMLComponent{
+	protected function getTagName(){
+		return "td";
 	}
 }
-class HTMLTableHeadCell extends HTMLTableCell{
-	public function __construct($values = ""){
-		parent::__construct($values);
-		$this->setTag("th");
+class HTMLTableHeadCell extends HTMLComponent{
+	protected function getTagName(){
+		return "th";
 	}
 }
 ?>

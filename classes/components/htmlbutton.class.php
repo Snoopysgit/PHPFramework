@@ -1,39 +1,15 @@
 <?php
 namespace phpframework\components;
 
-class HTMLButton extends HTMLText{	
-	public function __construct($text = "Button", $name = "", $value="true", $type="button"){
-       parent::__construct($text);
-	   $this->setTag("button");
+class HTMLButton extends HTMLInput{
+	public function __construct($name = "Button", $value="true"){
+       parent::__construct();
 	   $this->addClassName("btn");
-	   
-	   $this->setType($type);
-	   $this->setValue($value);
-	   $this->setName($name);
-	}
-	public function getName(){
-		return $this->getAttribute("name");
-	}
-	public function setName($name){
-		if($name == ""){
-			$this->addAttribute("name", $this->getElementId());		
-		}else{
-			$this->addAttribute("name",$name);
-		}
-	}
-	public function setValue($value){
-		if($value != ""){
-			$this->addAttribute("value",$value);
-		}
-	}
-	public function getValue(){
-		return $this->getAttribute("value");
+	   $this->setValue($name);
+	   $this->setType("button");
 	}
 	public function isActive(){
 		return (isset($_POST[$this->getName()]) and $_POST[$this->getName()] == $this->getValue());
-	}
-	public function setType($type){
-		$this->addAttribute("type",$type);
 	}
 }
 ?>

@@ -29,7 +29,7 @@ class HTMLDialog extends HTMLContainer implements NavigatorInterface{
 		$this->head->addClassName("modal-header");
 		
 		$closeButton = new HTMLButton();
-		$closeButton->setText("&times;");
+		$closeButton->setValue("&times;");
 		$closeButton->addAttribute("data-dismiss", "modal");
 		$closeButton->addAttribute("aria-hidden", "true");
 		$closeButton->addClassName("close");

@@ -18,6 +18,7 @@ use phpframework\modules\htmldialog;
 use phpframework\controlers\logincontroler;
 use phpframework\controlers\messagecontroler;
 use phpframework\controlers\messageprinter;
+require_once 'loginorm.class.php';
 
 class ORMTableEditor extends HTMLContainer{
 	private $columns;
@@ -114,7 +115,6 @@ class ORMTableEditor extends HTMLContainer{
 		}
 	}
 	public function setORM($orm){
-		$orm = $orm;
 		$this->orm = $orm;
 		if($this->isAllowedToEditRecords()){
 			$this->initRowEditor($orm, $orm::newRow());

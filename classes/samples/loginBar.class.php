@@ -1,12 +1,14 @@
 <?php
 namespace phpframework\samples;
-use phpframework\components\htmlcontainer;
-use phpframework\components\htmlinput;
-use phpframework\components\htmlsubmitbutton;
-use phpframework\components\htmltitle;
-use phpframework\components\htmlicon;
-use phpframework\modules\htmlform;
-use phpframework\controlers\logincontroler;
+use phpframework\components\HTMLContainer;
+use phpframework\components\HTMLInput;
+use phpframework\components\HTMLSubmitButton;
+use phpframework\components\HTMLTitle;
+use phpframework\components\HTMLIcon;
+use phpframework\modules\HTMLForm;
+use phpframework\controlers\LoginControler;
+use phpframework\controlers\MessageControler;
+use phpframework\controlers\MessagePrinter;
 
 class LoginBar extends HTMLContainer{
 	private $form;
@@ -24,8 +26,19 @@ class LoginBar extends HTMLContainer{
 		}elseif($this->buttonLogout->isActive()){
 			LoginControler::singleton()->logout();
 		}
+		if(LoginControler::singleton()->isLoggedIn()){
+			$this->loadLogoutForm();
+		}else{
+			$this->loadLoginForm();
+			if(isset($_POST[$this->inputLoginName->getName()])){
+				$this->addContent(MessageControler::getMessage("Falsche eingaben", "Benutzername oder Passwort falsch!", MessagePrinter::ErrorMessage));
+			}
+		}
 	}
 	private function initComponents(){
+		$navbarInner = new HTMLContainer();
+		$navbarInner->addClassName("navbar-inner");
+		
 		$this->form = new HTMLForm();
 		
 		$this->inputLoginName = new HTMLInput();
@@ -43,13 +56,17 @@ class LoginBar extends HTMLContainer{
 		
 		$this->buttonLogin = new HTMLSubmitButton();
 		$this->buttonLogout = new HTMLSubmitButton();
-		$this->buttonLogin->setText("Login");
-		$this->buttonLogin->setValue("LOGIN");
-		$this->buttonLogout->setText("Logout");
-		$this->buttonLogout->setValue("LOGOUT");
+		$this->buttonLogin->setValue("Login");
+		$this->buttonLogout->setValue("Logout");
+		
+		
+		$title = new HTMLTitle("MArV Mitarbeiterverwaltung");
+		$title->addClassName("brand");
+		$navbarInner->addContent($title);
+		$navbarInner->addContent($this->form);
+		$this->addContent($navbarInner);
 	}
-	private function loginForm(){
-			
+	private function loadLoginForm(){
 		$container = new HTMLContainer();
 		$container->addClassName("input-prepend");
 		$container->addClassName("span4");
@@ -65,38 +82,18 @@ class LoginBar extends HTMLContainer{
 		$this->form->addContent($this->inputPassword);
 		$this->form->addContent($this->buttonLogin);
 		
-		$this->form->addClassName("navbar-form"); 
-		return $this->form;
+		$this->form->addClassName("navbar-form");
 	}
-	private function logoutForm(){
-		
+	private function loadLogoutForm(){		
 		$firstname = LoginControler::singleton()->getLogin()->getValue("firstname");
 		$lastname = LoginControler::singleton()->getLogin()->getValue("lastname");
-		
-		$this->form->addContent(new HTMLTitle($firstname." ".$lastname));
+		$title = new HTMLTitle($firstname." ".$lastname);
+		$title->addClassName("brand");
+		$this->form->addContent($title);
 		$this->form->addContent($this->buttonLogout);
 		$this->form->addClassName("navbar-form"); 
 		$this->form->addClassName("pull-right");
-		return $this->form;
 	}
-	public function refreshHTML(){
-		$innerNav = new HTMLContainer();
-		$innerNav->addClassName("navbar-inner");
-		
-		$title = new HTMLTitle("MArV Mitarbeiterverwaltung");
-		$innerNav->addContent($title);
-				
-		if(LoginControler::singleton()->isLoggedIn()){
-			$innerNav->addContent($this->logoutForm());
-		}else{
-			$innerNav->addContent($this->loginForm());
-			if(isset($_POST[$this->inputLoginName->getName()])){
-				$innerNav->addContent(MessageControler::getMessage("Falsche eingaben", "Benutzername oder Passwort falsch!", MessagePrinter::ErrorMessage));
-			}
-		}
-		
-		$this->setInnerHTML($innerNav);
-	}	
 } 
 
 ?>
