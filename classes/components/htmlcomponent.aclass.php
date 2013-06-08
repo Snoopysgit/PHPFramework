@@ -87,12 +87,32 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	private function getEndTag(){
 		return "</".$this->getTag().">\n";
 	}
+	/**
+	* Gets the HTML of this component
+	* 
+	* This includes the content between the start and the end tag. e.g: 
+	* <code>
+	* &lt;div&gt;Hello world!&lt;/div&gt;
+	* </code>
+	* @return a string containing this tag including all the tags. This could be the whole page
+	*/
 	public function getHTML(){
 		$HTML = $this->getStartTag();
 		$HTML .= $this->getInnerHTML();
 		$HTML .= $this->getEndTag();
 		return $HTML;
 	}
+	/*
+	* Gets the inner HTML of this component
+	*
+	* Gets the html output of this tag, without the start and end tag of this component
+	* (This can be used for ajax purposes, where you want to fill the tag after page load)
+	*
+	* <code>
+	* Hello world!
+	* </code>
+	* @return a string containing all subcomponents of this component, without the start and end tag of this component
+	*/
 	public function getInnerHTML(){
 		$contentString = '';
 		foreach($this->content as $content){
@@ -100,12 +120,26 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		}
 		return $contentString;
 	}
+	/*
+	* Gets the html output of this tag. Including all subtags. (Same as getHTML())
+	*
+	* @return a string containing this tag including all the tags. This could be the whole page
+	*/
 	public function __toString(){
 		return $this->getHTML();
 	}
+	/*
+	* Override the default tag set by the specific class
+	*
+	* @param string $tagName a string for the tagName(Overrides the default tagname of the specific class)
+	*/
 	public function setTag($tagName){
 		$this->tag = $tagName;
 	}
+	/*
+	* Gets tag tagName of this component
+	* @return string tagName
+	*/
 	public function getTag(){
 		if($this->tag == ""){
 			return $this->getTagName();
@@ -113,33 +147,79 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			return $this->tag;
 		}
 	}
+	/*
+	* Gets the elementId of this component. This is the Attribute named "id"
+	*
+	* @return a string containing the id of this component
+	*/
 	public function getElementId(){
 		return $this->getAttribute("id");
 	}
+	/*
+	* Adds a new CSS Class name to this component. It will automaticly be included in the class list of this component.
+	*
+	* @param string $className a classname to be included or multiple classnames seperated by a space
+	*/
 	public function addClassName($className){
 		$classNames = explode(" ", $className);
 		foreach($classNames as $name){
 			$this->classes[$name] = $name;
 		}
 	}
+	/*
+	* Removes one or multiple CSS class names from this component( if they're present)
+	*
+	* @param string $className a classname to be excluded or multiple classnames seperated by a space
+	*/
 	public function removeClassName($className){
 		$classNames = explode($className);
 		foreach($classNames as $name){
 			unset($this->classes[$name]);
 		}
 	}
+	/*
+	* Checks if a CSS className is already set for this component
+	*
+	* @param string $className a classname to be excluded or multiple classnames seperated by a space
+	* @return boolean true if the className is set, fals if not
+	*/
 	public function isClassNameSet($className){
 		return isset($this->classes[$className]);
 	}
+	/*
+	* Adds a new attribute to this component. It will automaticly be included in the class list of this component.
+	*
+	* @param string $attribute an attributename
+	* @param string $value the value of this attribute
+	*/
 	public function addAttribute($attribute, $value){
 		$this->attributes[$attribute] = $value;
 	}
+	/*
+	* Get's the current value of an attribute. 
+	*
+	* @param string $attribute an attributename to get the value of
+	* @return string value of this attribute or null if it is not set at all
+	*/
 	public function getAttribute($attribute){
 		return $this->attributes[$attribute];
 	}
+	/*
+	* Removes an attribute of this component( if it's present)
+	*
+	* @param string $attribute an attribute to be excluded
+	*/
 	public function removeAttribute($attribute){
 		unset($this->attributes[$attribute]);
 	}
+	/*
+	* Adds content to this component. 
+	* The content can be other HTMLComponents or classes which implements the magic method __toString()
+	* To add multiple content at once you can also wrap multiple content objects within an array()
+	*
+	* @param string|HTMLComponent|array() $HTMLComponent single or multiple content objects to add
+	* important: just HTMLComponents can be removed after they have been added with addContent.
+	*/
 	public function addContent($HTMLComponent){
 		if($HTMLComponent != null){
 			if(is_array($HTMLComponent)){
@@ -155,13 +235,28 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			}
 		}
 	}
+	/*
+	* Removes a HTMLComponent from this component. 
+	*
+	* @param HTMLComponent $HTMLComponent a HTMLComponent to remove
+	*/
 	public function removeContent(HTMLComponent $HTMLComponent){
 		print "a";
 		unset($this->content[$HTMLComponent->getElementId()]);
 	}
+	/*
+	* Get's the HTMLComponent if it is contained within this component 
+	*
+	* @param string $elementId the elementId of a HTMLComponent to get
+	* @return HTMLComponent|null the HTMLComponent if it is contained, or null if not
+	*/
 	public function getContent($elementId){
 		return $this->content[$key];
 	}
+	/*
+	* Removes all content elements of this component. After this, this component will just return start tag and end tag
+	*
+	*/
 	public function removeAllContent(){
 		$this->content = array();
 	}
