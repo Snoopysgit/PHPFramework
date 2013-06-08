@@ -9,29 +9,29 @@ namespace phpframework\components;
  * @author Christian Thommen
  */
 abstract class HTMLComponent implements HTMLComponentInterface{
-	/*
+	/**
 	* classNames contained in this tag
 	*/
 	private $classes = array();
-	/*
+	/**
 	* attributes contained in this tag
 	*/
 	private $attributes = array();
-	/*
+	/**
 	* holds the tagname, defaults to div
 	*/
 	private $tag = "";	
-	/*
+	/**
 	* holds all content for this tag. 
 	* This can be other HTMLComponents or Objects which implements the magic method __toString()
 	*/
 	private $content = array();
-	/*
+	/**
 	* static counter for tag ID generation. Holds one counter per class
 	*/
 	private static $objId = array();
 	
-	/*
+	/**
 	* The constructor of a HTMLComponent initializes the component with a 
 	* @param $content HTMLComponent or class which implements __toString or an array() of such objects 
 	* @return a new instance of this class
@@ -46,14 +46,14 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		$this->setElementId($classWithNamespace."_".self::$objId[$classWithNamespace]);
 		$this->addContent($content);
 	}
-	/*
+	/**
 	* Sets the elementId
 	* @param string $elementId a string for the id attribute of this component
 	*/
 	private function setElementId($elementId){
 		$this->addAttribute("id", $elementId);
 	}
-	/*
+	/**
 	* Gets the start tag of this component. This includes all attributes, classNames and the ID of this component.
 	*
 	* @return a string with the whole start tag
@@ -79,7 +79,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		$startTag .= ">\n";
 		return $startTag;
 	}
-	/*
+	/**
 	* Gets the end tag of this component
 	*
 	* @return string the end tag
@@ -87,7 +87,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	private function getEndTag(){
 		return "</".$this->getTag().">\n";
 	}
-	/**
+	/***
 	* Gets the HTML of this component
 	* 
 	* This includes the content between the start and the end tag. e.g: 
@@ -102,7 +102,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		$HTML .= $this->getEndTag();
 		return $HTML;
 	}
-	/*
+	/**
 	* Gets the inner HTML of this component
 	*
 	* Gets the html output of this tag, without the start and end tag of this component
@@ -120,7 +120,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		}
 		return $contentString;
 	}
-	/*
+	/**
 	* Gets the html output of this tag. Including all subtags. (Same as getHTML())
 	*
 	* @return a string containing this tag including all the tags. This could be the whole page
@@ -128,7 +128,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function __toString(){
 		return $this->getHTML();
 	}
-	/*
+	/**
 	* Override the default tag set by the specific class
 	*
 	* @param string $tagName a string for the tagName(Overrides the default tagname of the specific class)
@@ -136,7 +136,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function setTag($tagName){
 		$this->tag = $tagName;
 	}
-	/*
+	/**
 	* Gets tag tagName of this component
 	* @return string tagName
 	*/
@@ -147,7 +147,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			return $this->tag;
 		}
 	}
-	/*
+	/**
 	* Gets the elementId of this component. This is the Attribute named "id"
 	*
 	* @return a string containing the id of this component
@@ -155,7 +155,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function getElementId(){
 		return $this->getAttribute("id");
 	}
-	/*
+	/**
 	* Adds a new CSS Class name to this component. It will automaticly be included in the class list of this component.
 	*
 	* @param string $className a classname to be included or multiple classnames seperated by a space
@@ -166,7 +166,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			$this->classes[$name] = $name;
 		}
 	}
-	/*
+	/**
 	* Removes one or multiple CSS class names from this component( if they're present)
 	*
 	* @param string $className a classname to be excluded or multiple classnames seperated by a space
@@ -177,7 +177,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			unset($this->classes[$name]);
 		}
 	}
-	/*
+	/**
 	* Checks if a CSS className is already set for this component
 	*
 	* @param string $className a classname to be excluded or multiple classnames seperated by a space
@@ -186,7 +186,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function isClassNameSet($className){
 		return isset($this->classes[$className]);
 	}
-	/*
+	/**
 	* Adds a new attribute to this component. It will automaticly be included in the class list of this component.
 	*
 	* @param string $attribute an attributename
@@ -195,7 +195,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function addAttribute($attribute, $value){
 		$this->attributes[$attribute] = $value;
 	}
-	/*
+	/**
 	* Get's the current value of an attribute. 
 	*
 	* @param string $attribute an attributename to get the value of
@@ -204,7 +204,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function getAttribute($attribute){
 		return $this->attributes[$attribute];
 	}
-	/*
+	/**
 	* Removes an attribute of this component( if it's present)
 	*
 	* @param string $attribute an attribute to be excluded
@@ -212,7 +212,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function removeAttribute($attribute){
 		unset($this->attributes[$attribute]);
 	}
-	/*
+	/**
 	* Adds content to this component. 
 	* The content can be other HTMLComponents or classes which implements the magic method __toString()
 	* To add multiple content at once you can also wrap multiple content objects within an array()
@@ -235,7 +235,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 			}
 		}
 	}
-	/*
+	/**
 	* Removes a HTMLComponent from this component. 
 	*
 	* @param HTMLComponent $HTMLComponent a HTMLComponent to remove
@@ -244,7 +244,7 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 		print "a";
 		unset($this->content[$HTMLComponent->getElementId()]);
 	}
-	/*
+	/**
 	* Get's the HTMLComponent if it is contained within this component 
 	*
 	* @param string $elementId the elementId of a HTMLComponent to get
@@ -253,14 +253,14 @@ abstract class HTMLComponent implements HTMLComponentInterface{
 	public function getContent($elementId){
 		return $this->content[$key];
 	}
-	/*
+	/**
 	* Removes all content elements of this component. After this, this component will just return start tag and end tag
 	*
 	*/
 	public function removeAllContent(){
 		$this->content = array();
 	}
-	/*
+	/**
 	* Get's the tagName of this component. Each specific implementation of this class must implement this function.
 	* sample: return "div"; or return "font";
 	* @param string $elementId the elementId of a HTMLComponent to get
