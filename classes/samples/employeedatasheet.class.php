@@ -1,11 +1,11 @@
 <?php
 namespace phpframework\samples;
-use phpframework\orm\ORMRowEditor;
-use phpframework\orm\AccessRightORM;
-use phpframework\orm\PersonAccessRightORM;
-use phpframework\components\HTMLTitle;
-use phpframework\components\HTMLLabel;
-use phpframework\components\HTMLCheckBox;
+use phpframework\orm\ormroweditor;
+use phpframework\orm\accessrightorm;
+use phpframework\orm\personaccessrightorm;
+use phpframework\components\htmltitle;
+use phpframework\components\htmllabel;
+use phpframework\components\htmlcheckbox;
 
 class EmployeeDataSheet extends ORMRowEditor{
 	private $possibleAccessRights = array();
@@ -25,28 +25,30 @@ class EmployeeDataSheet extends ORMRowEditor{
 		$this->setAccessRightsValues();
 	}
 	protected function save(){
-		foreach($this->possibleAccessRights as $editBox){
-			if($editBox->isChecked()){
-				if(!isset($this->currentAccessRights[$editBox->GetValue()])){
-					// neuen eintrag erstellen
-					$newAccessRight = PersonAccessRightORM::newRow();
-					$newAccessRight->idperson = $this->getRecord()->getId();
-					$newAccessRight->idaccessright = $editBox->getValue();
-					$newAccessRight->saveToDB();
-					$this->currentAccessRights[$newAccessRight->idaccessright] = $newAccessRight;
-					$this->possibleAccessRights[$newAccessRight->idaccessright]->setChecked(true);
-				}
-			}else{
-				if(isset($this->currentAccessRights[$editBox->GetValue()])){
-					// bestehenden Eintrag löschen
-					$record = $this->currentAccessRights[$editBox->GetValue()];
-					$record->deleteFromDB();
-					$this->possibleAccessRights[$editBox->GetValue()]->setChecked(false);
-					unset($this->currentAccessRights[$editBox->GetValue()]);
+		if(parent::save()){
+			foreach($this->possibleAccessRights as $editBox){
+				if($editBox->isChecked()){
+						print "id=".$editBox->getValue();
+					if(!isset($this->currentAccessRights[$editBox->GetValue()])){
+						// neuen eintrag erstellen
+						$newAccessRight = PersonAccessRightORM::newRow();
+						$newAccessRight->idperson = $this->getRecord()->getId();
+						$newAccessRight->idaccessright = $editBox->getValue();
+						$newAccessRight->saveToDB();
+						$this->currentAccessRights[$newAccessRight->idaccessright] = $newAccessRight;
+						$this->possibleAccessRights[$newAccessRight->idaccessright]->setChecked(true);
+					}
+				}else{
+					if(isset($this->currentAccessRights[$editBox->GetValue()])){
+						// bestehenden Eintrag löschen
+						$record = $this->currentAccessRights[$editBox->GetValue()];
+						$record->deleteFromDB();
+						$this->possibleAccessRights[$editBox->GetValue()]->setChecked(false);
+						unset($this->currentAccessRights[$editBox->GetValue()]);
+					}
 				}
 			}
 		}
-		parent::save();
 	}
 	protected function delete(){
 		if($this->currentAccessRights != null){

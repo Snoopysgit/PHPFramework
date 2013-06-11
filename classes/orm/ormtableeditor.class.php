@@ -1,23 +1,23 @@
 <?php
 namespace phpframework\orm;
-use phpframework\components\HTMLContainer;
-use phpframework\components\HTMLLabel;
-use phpframework\components\HTMLInput;
-use phpframework\components\HTMLSubmitButton;
-use phpframework\components\HTMLTable;
-use phpframework\components\HTMLTitle;
-use phpframework\components\HTMLIcon;
-use phpframework\components\HTMLText;
-use phpframework\components\HTMLTableHead;
-use phpframework\components\HTMLTableHeadCell;
-use phpframework\components\HTMLTableRow;
-use phpframework\components\HTMLTableBody;
-use phpframework\components\HTMLTableCell;
-use phpframework\modules\HTMLForm;
-use phpframework\modules\HTMLDialog;
-use phpframework\controlers\LoginControler;
-use phpframework\controlers\MessageControler;
-use phpframework\controlers\MessagePrinter;
+use phpframework\components\htmlcontainer;
+use phpframework\components\htmllabel;
+use phpframework\components\htmlinput;
+use phpframework\components\htmlsubmitbutton;
+use phpframework\components\htmltable;
+use phpframework\components\htmltitle;
+use phpframework\components\htmlicon;
+use phpframework\components\htmltext;
+use phpframework\components\htmltablehead;
+use phpframework\components\htmltableheadcell;
+use phpframework\components\htmltablerow;
+use phpframework\components\htmltablebody;
+use phpframework\components\htmltablecell;
+use phpframework\modules\htmlform;
+use phpframework\modules\htmldialog;
+use phpframework\controlers\logincontroler;
+use phpframework\controlers\messagecontroler;
+use phpframework\controlers\messageprinter;
 require_once 'loginorm.class.php';
 
 class ORMTableEditor extends HTMLContainer{
@@ -81,10 +81,17 @@ class ORMTableEditor extends HTMLContainer{
 																"Datensatz erfolgreich angepasst!", 
 																MessagePrinter::SuccessMessage));
 					}else{
-						$contentRow->addClassName("warning");	
-						$this->error->addContent(MessageControler::getMessage("Datensatz nicht gespeichert", 
-																"Dies kann passieren, wenn gespeichert wurde, obwohl keine Daten geändert wurden!", 
-																MessagePrinter::WarningMessage));
+						if($this->rowEditor[$row->getId()]->isPasswordOK()){
+							$contentRow->addClassName("warning");	
+							$this->error->addContent(MessageControler::getMessage("Datensatz nicht gespeichert", 
+																	"Dies kann passieren, wenn gespeichert wurde, obwohl keine Daten geändert wurden!", 
+																	MessagePrinter::WarningMessage));
+						}else{
+							$contentRow->addClassName("error");	
+							$this->error->addContent(MessageControler::getMessage("Datensatz nicht gespeichert", 
+																	"Passwörter wurden nicht identisch eingegeben", 
+																	MessagePrinter::ErrorMessage));						
+						}
 					}
 				}
 				foreach($this->columns as $column){
@@ -96,8 +103,7 @@ class ORMTableEditor extends HTMLContainer{
 				}
 				if($this->isAllowedToEditRecords()){
 					$dialog = $this->addDialogEditor($this->orm, $row->getId());
-					$link = $dialog->getHTMLLink("bearbeiten");
-					$link->addContent(new HTMLIcon("icon-pencil"));
+					$link = $dialog->getHTMLLink(new HTMLIcon("icon-pencil"));
 					$contentRow->addContent(new HTMLTableCell($link));
 				}
 				$tbody->addContent($contentRow);
@@ -119,9 +125,8 @@ class ORMTableEditor extends HTMLContainer{
 		if($this->isAllowedToEditRecords()){
 			$this->initRowEditor($orm, $orm::newRow());
 			$dialog = $this->addDialogEditor($this->orm, 0);
-			$link = $dialog->getHTMLLink("bearbeiten");
+			$link = $dialog->getHTMLLink(array(new HTMLIcon("icon-plus"),new HTMLText("Neu")));
 			$link->addClassName("btn");
-			$link->addContent(array(new HTMLIcon("icon-plus"),new HTMLText("Neu")));
 			$this->addContent($link);
 			if($this->rowEditor[0]->isUpdateRequested()){
 				if($this->rowEditor[0]->isUpdated()){
@@ -165,6 +170,7 @@ class ORMRowEditor extends HTMLContainer{
 	private $updated;
 	private $deleteButton;
 	private $saveButton;
+	private $passwordOK = true;
 	
 	public function __construct($orm, $record = null, $editDisabled = false){
 		parent::__construct();
@@ -243,7 +249,8 @@ class ORMRowEditor extends HTMLContainer{
 		
 		$label = new HTMLLabel($label.": ");
 		$label->addClassName("control-label");
-		$field = new HTMLInput($valueName);
+		$field = new HTMLInput();
+		$field->addAttribute("fieldName", $valueName);
 		$field->setDisabled($disabled);
 		$field->setValue($value);
 		$field->addClassName("input-block-level");
@@ -262,14 +269,16 @@ class ORMRowEditor extends HTMLContainer{
 		
 		$label = new HTMLLabel($label.": ");
 		$label->addClassName("control-label");
-		$field = new HTMLInput($valueName);
+		$field = new HTMLInput();
+		$field->addAttribute("fieldName", $valueName);
 		$field->setDisabled($disabled);
 		$field->setValue($value);
 		$field->setType("password");
 		$field->addClassName("input-medium");
 		$this->fields[$valueName] = $field;
 		if(!$disabled){
-			$field2 = new HTMLInput($valueName."-Check");
+			$field2 = new HTMLInput();
+			$field2->addAttribute("fieldName", $valueName."-Check");
 			$this->fields[$valueName."-Check"] = $field2;
 			$field2->setDisabled($disabled);
 			$field2->setValue("*****");
@@ -293,15 +302,31 @@ class ORMRowEditor extends HTMLContainer{
 		return false;
 	}
 	protected function save(){
+		$this->passwordOK = true;
 		foreach($this->fields as $field){
-			$fieldname = $field->getName();
-			if($field->getType() != "password" or ($field->getValue() != "*****" and $fields[$fieldname."-Check"]->getValue() == $field->getValue())){
+			$fieldname = $field->getAttribute("fieldName");
+			if($field->getType() != "password"){
 				$this->record->$fieldname = $field->getValue();
+			}else{
+				if(!strpos($field->getAttribute("fieldName"),"-Check")){
+					if($field->getValue() == "*****"){
+						$this->passwordOK = true;
+					}elseif($this->fields[$fieldname."-Check"]->getValue() == $field->getValue()){
+						$this->record->$fieldname = $field->getValue();
+						$this->passwordOK = true;
+					}else{
+						$this->passwordOK = false;					
+					}
+				}
 			}
 		}
-		$this->record->saveToDB();
-		$this->setUpdated(true);
-		return true;
+		if($this->passwordOK){
+			$this->record->saveToDB();
+			$this->setUpdated(true);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	protected function setUpdated($updated){
 		$this->updated = $updated;
@@ -333,6 +358,9 @@ class ORMRowEditor extends HTMLContainer{
 	private function isAllowedToEditRecords(){
 		$orm = $this->orm;
 		return LoginControler::singleton()->hasAccessRight($orm::getEditAccessRight());
+	}
+	public function isPasswordOK(){
+		return $this->passwordOK;
 	}
 }
 

@@ -2,7 +2,20 @@
 namespace phpframework\orm;
 use phpframework\controlers\databasecontroler;
 
-abstract class ORM implements ORMInterface{	
+/**
+ * Base class for ORM classes
+ * 
+ * This abstract class provides basic functionalites for ORM table mappers
+ * @author Christian Thommen
+ */
+abstract class ORM implements ORMInterface{
+	/**
+	 * Creates a new class specific instance
+	 * 
+	 * It will set default values for all attributes
+	 * ID, FK, NUMBER will be initialized to 0
+	 * TEXT, PASSWORD or all other will initialized as an empty string ""
+	 */
 	protected function __construct(){
 		$classname = get_called_class();
 		$columns = $classname::getColumns();

@@ -33,7 +33,6 @@ require_once 'controlers/databasecontroler.class.php';
 require_once 'controlers/sessioncontroler.class.php';
 require_once 'controlers/logincontroler.class.php';
 require_once 'controlers/navigationcontroler.class.php';
-require_once 'controlers/contentControler.class.php';
 
 require_once 'orm/orm.aclass.php';
 require_once 'orm/loginorm.class.php';

@@ -1,6 +1,6 @@
 <?php
 namespace phpframework\samples;
-use phpframework\orm\ORMTableEditor;
+use phpframework\orm\ormtableeditor;
 
 class EmployeeList extends ORMTableEditor{
 	public function __construct(){
