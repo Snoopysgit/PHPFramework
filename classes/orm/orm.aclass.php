@@ -258,13 +258,4 @@ class ColumnType{
 	const TEXT = 3;
 	const PASSWORD = 4;
 }
-class ForeignKeyConstruct{
-	private $table1;
-	private $table2;
-	private $table3;
-	public function __construct(){
-		
-	}
-	
-}
 ?>

@@ -1,9 +1,9 @@
 <?php
 namespace phpframework\modules;
-use phpframework\components\htmlcontainer;
-use phpframework\components\htmlbutton;
-use phpframework\components\htmllink;
-use phpframework\controlers\navigatorinterface;
+use phpframework\components\HTMLContainer;
+use phpframework\components\HTMLButton;
+use phpframework\components\HTMLLink;
+use phpframework\controlers\NavigatorInterface;
 
 /**
  * Represents an HTML Dialog

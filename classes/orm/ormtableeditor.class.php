@@ -1,23 +1,23 @@
 <?php
 namespace phpframework\orm;
-use phpframework\components\htmlcontainer;
-use phpframework\components\htmllabel;
-use phpframework\components\htmlinput;
-use phpframework\components\htmlsubmitbutton;
-use phpframework\components\htmltable;
-use phpframework\components\htmltitle;
-use phpframework\components\htmlicon;
-use phpframework\components\htmltext;
-use phpframework\components\htmltablehead;
-use phpframework\components\htmltableheadcell;
-use phpframework\components\htmltablerow;
-use phpframework\components\htmltablebody;
-use phpframework\components\htmltablecell;
-use phpframework\modules\htmlform;
-use phpframework\modules\htmldialog;
-use phpframework\controlers\logincontroler;
-use phpframework\controlers\messagecontroler;
-use phpframework\controlers\messageprinter;
+use phpframework\components\HTMLContainer;
+use phpframework\components\HTMLLabel;
+use phpframework\components\HTMLInput;
+use phpframework\components\HTMLSubmitButton;
+use phpframework\components\HTMLTable;
+use phpframework\components\HTMLTitle;
+use phpframework\components\HTMLIcon;
+use phpframework\components\HTMLText;
+use phpframework\components\HTMLTableHead;
+use phpframework\components\HTMLTableHeadCell;
+use phpframework\components\HTMLTableRow;
+use phpframework\components\HTMLTableBody;
+use phpframework\components\HTMLTableCell;
+use phpframework\modules\HTMLForm;
+use phpframework\modules\HTMLDialog;
+use phpframework\controlers\LoginControler;
+use phpframework\controlers\MessageControler;
+use phpframework\controlers\MessagePrinter;
 require_once 'loginorm.class.php';
 
 class ORMTableEditor extends HTMLContainer{
