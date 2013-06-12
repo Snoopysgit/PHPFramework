@@ -28,7 +28,6 @@ class EmployeeDataSheet extends ORMRowEditor{
 		if(parent::save()){
 			foreach($this->possibleAccessRights as $editBox){
 				if($editBox->isChecked()){
-						print "id=".$editBox->getValue();
 					if(!isset($this->currentAccessRights[$editBox->GetValue()])){
 						// neuen eintrag erstellen
 						$newAccessRight = PersonAccessRightORM::newRow();

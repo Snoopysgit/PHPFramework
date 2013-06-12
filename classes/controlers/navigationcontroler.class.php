@@ -33,7 +33,7 @@ class NavigationControler extends Controler{
 	 */
 	public function addNavigator(Navigator $navigator){
 		if($navigator->getAccessRight() == "" or LoginControler::singleton()->hasAccessRight($navigator->getAccessRight()) or ($navigator->getAccessRight() == "LOGIN" and LoginControler::singleton()->isLoggedIn())){
-			if(!is_array($this->navigatorsByCategory[$navigator->getDisplayCategory()])){
+			if(!isset($this->navigatorsByCategory[$navigator->getDisplayCategory()])){
 				$this->navigatorsByCategory[$navigator->getDisplayCategory()] = array();	
 			}
 			array_push($this->navigatorsByCategory[$navigator->getDisplayCategory()], $navigator);
